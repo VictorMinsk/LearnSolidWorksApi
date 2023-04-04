@@ -20,6 +20,9 @@ public class EditFeature
     public void ActiveDoc()
     {
         SwModel=(ModelDoc2)_swApp.ActiveDoc;
+    }
+    public void SetProperties()
+    {        
         SwModelDocExt = SwModel.Extension;
         SwSketchMgr = SwModel.SketchManager;
         SwFeatureMgr = SwModel.FeatureManager;
@@ -34,10 +37,7 @@ public class EditFeature
         var defaultTemplate =
             _swApp.GetUserPreferenceStringValue((int)swUserPreferenceStringValue_e.swDefaultTemplatePart);
         //使用默认模板新建零件
-        SwModel = (_swApp.NewDocument(defaultTemplate, 0, 0, 0) as ModelDoc2)!;
-        SwModelDocExt = SwModel.Extension;
-        SwSketchMgr = SwModel.SketchManager;
-        SwFeatureMgr = SwModel.FeatureManager;
+        SwModel = (_swApp.NewDocument(defaultTemplate, 0, 0, 0) as ModelDoc2)!;   
     }
 
     /// <summary>
@@ -81,6 +81,7 @@ public class EditFeature
     public void FeatureExtrusion()
     {
         NewDocument();
+        SetProperties();
         SketchOnFrontPlane();
         SwSketchMgr.CreateCenterRectangle(0, 0, 0, 1, 1, 0);
         ViewZoomAndExitSketch();
