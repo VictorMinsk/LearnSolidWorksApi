@@ -98,7 +98,7 @@ public class EditFeature
             false, false, false, true, 0, 0, //拔模相关
              false, false, false, false, //结束条件为到离指定面指定的距离，反向等距和转化曲面
              true, false, true, //多实体合并结果
-             (int)swEndConditions_e.swEndCondBlind, 0, false); //拉伸起始条件，等距
+             (int)swStartConditions_e.swStartSketchPlane, 0, false); //拉伸起始条件，等距
         if (swFeat != null)
         {
             Console.WriteLine($"特征类型：{swFeat.GetTypeName2()}，特征名称：{swFeat.Name}");
