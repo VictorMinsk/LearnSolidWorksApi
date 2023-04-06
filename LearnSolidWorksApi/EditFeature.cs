@@ -91,12 +91,14 @@ public class EditFeature
         SwModel.ClearSelection2(true);
         SwModelDocExt.SelectByID2("", "SKETCH", 0, 1, 0, false, 0, null, (int)swSelectOption_e.swSelectOptionDefault);
 
-        var swFeat = SwFeatureMgr.FeatureExtrusion3(true, false, false,
-             (int)swEndConditions_e.swEndCondBlind, (int)swEndConditions_e.swEndCondBlind,
-             2, 0, false, false, false, true, 0, 0,
-             false, false, false, false,
-             true, false, true,
-             (int)swEndConditions_e.swEndCondBlind, 0, false);
+        var swFeat = SwFeatureMgr.FeatureExtrusion3(
+            true, false, false,//与拉伸方向有关
+             (int)swEndConditions_e.swEndCondBlind, (int)swEndConditions_e.swEndCondBlind, //结束条件相关
+             2, 0, //拉伸深度
+            false, false, false, true, 0, 0, //拔模相关
+             false, false, false, false, //结束条件为到离指定面指定的距离，反向等距和转化曲面
+             true, false, true, //多实体合并结果
+             (int)swEndConditions_e.swEndCondBlind, 0, false); //拉伸起始条件，等距
         if (swFeat != null)
         {
             Console.WriteLine($"特征类型：{swFeat.GetTypeName2()}，特征名称：{swFeat.Name}");
