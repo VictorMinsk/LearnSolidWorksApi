@@ -86,9 +86,15 @@ public class EditFeature
         //根据坐标选择草图圆，加选，标记为0
         swModelDocExt.SelectByID2("", "EXTSKETCHSEGMENT", -1.5, 1, 0, true, 0, null, 0);
 
-        var swFeat = swFeatureMgr.FeatureRevolve2(true, true, false, false, false, false, (int)swEndConditions_e.swEndCondBlind,
-            (int)swEndConditions_e.swEndCondBlind, 360 * Math.PI / 180, 0, false, false, 0, 0,
-            (int)swThinWallType_e.swThinWallOneDirection, 0, 0, true, false, true);
+        var swFeat = swFeatureMgr.FeatureRevolve2(
+            true, true, false, false, //与旋转结果有关的参数
+            false, false, //与旋转方向相关的参数
+            (int)swEndConditions_e.swEndCondBlind,0, //旋转结束条件
+            360 * Math.PI / 180, 0, //旋转角度相关的参数
+            false, false,0, 0, //与偏移相关的参数(到离指定面指定的距离)            
+            (int)swThinWallType_e.swThinWallOneDirection, 0, 0, //与薄壁类型相关的参数
+            true, false, true//与多实体相关的参数
+            );
         if (swFeat != null)
         {
             Console.WriteLine($"特征类型：{swFeat.GetTypeName2()}，特征名称：{swFeat.Name}");
