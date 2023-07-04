@@ -25,7 +25,9 @@
           "net6.0"
         ],
         "sources": {
-          "https://api.nuget.org/v3/index.json": {}
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {},
+          "https://www.nuget.org/api/v2/": {}
         },
         "frameworks": {
           "net6.0": {
@@ -43,13 +45,9 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
-            "SolidWorks.Interop.sldworks": {
+            "Visiativ.SOLIDWORKS.Interop": {
               "target": "Package",
-              "version": "[29.4.1, )"
-            },
-            "SolidWorks.Interop.swconst": {
-              "target": "Package",
-              "version": "[29.4.1, )"
+              "version": "[31.2.1, )"
             }
           },
           "imports": [
@@ -68,7 +66,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.201\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.203\\RuntimeIdentifierGraph.json"
         }
       }
     }

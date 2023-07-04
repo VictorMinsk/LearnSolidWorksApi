@@ -57,6 +57,7 @@ public class EditFeature
         if (swFeat != null)
         {
             Console.WriteLine($"特征类型：{swFeat.GetTypeName2()}，特征名称：{swFeat.Name}");
+            //特征类型：Extrusion，特征名称：Boss-Extrude1
         }
     }
 
@@ -121,16 +122,15 @@ public class EditFeature
         swModelDocExt.SelectByID2("Front Plane", "PLANE", 0, 0, 0, false, 0, null, (int)swSelectOption_e.swSelectOptionDefault);
         swSketchMgr.InsertSketch(true);
         swSketchMgr.CreateArc(-2, 0, 0, 0, 0, 0, -2, 2, 0, 1);
-
-
         swSketchMgr.InsertSketch(true);
+        
         swModel.ViewZoomtofit2();
 
         swModel.ClearSelection2(true);
 
-        //选择扫描轮廓，标记为1
+        //选择扫描草图轮廓，标记为1
         swModelDocExt.SelectByID2("", "SKETCH", 0.5, 0, 0, false, 1, null, 0);
-        //选择扫描路径，标记为4
+        //选择扫描草图路径，标记为4
         swModelDocExt.SelectByID2("", "SKETCH", -2, 2, 0, true, 4, null, 0);
 
         var swSweep = (SweepFeatureData)swFeatureMgr.CreateDefinition((int)swFeatureNameID_e.swFmSweep);
@@ -213,5 +213,51 @@ public class EditFeature
         //创建放样特征
         swFeatureMgr.InsertProtrusionBlend(false, true, false, 1, 0, 0, 1, 1, true, true, false, 0, 0, 0, true, true, true);
     }
+
+    /// <summary>
+    /// 拉伸切除特征
+    /// </summary>
+    public void FeatureCut()
+    {
+
+        FeatureExtrusion();
+        //选择正方体上的面
+
+        var swModel = (ModelDoc2)_swApp.ActiveDoc;
+        var swModelDocExt = swModel.Extension;
+        var swSketchMgr = swModel.SketchManager;
+        var swFeatureMgr = swModel.FeatureManager;
+
+        swModel.ClearSelection2(true);
+        swModelDocExt.SelectByID2("", "FACE", 0, 0, 2, false, 0, null, 0);
+        swSketchMgr.InsertSketch(true);
+        //创建键槽草图
+        swSketchMgr.CreateSketchSlot((int)swSketchSlotCreationType_e.swSketchSlotCreationType_line,
+            (int)swSketchSlotLengthType_e.swSketchSlotLengthType_FullLength,
+            0.5, -0.25, 0, 0, 0.25, 0, 0, 0.5, 0.25, 0, 1, true);
+        //绘制草图后我们直接创建拉伸切除
+       var swFeat = swFeatureMgr.FeatureCut4(
+            true, false, false, //拉伸切除方向
+            (int)swEndConditions_e.swEndCondBlind, 0, //结束条件相关
+            1, 0, //拉伸深度
+            false, false, false, true, 0, 0, //拔模相关
+            false, false, false, false, //结束条件为到离指定面指定的距离，反向等距和转化曲面
+            false, //钣金正交切除（非钣金使用false）
+            false, true, //多实体，特征范围
+            false, true, false, //装配体特征范围
+            (int)swStartConditions_e.swStartSketchPlane, 0, false, //结束条件
+            false//钣金零件，优化几何图形
+        );
+       if (swFeat != null)
+        {
+            Console.WriteLine($"特征类型：{swFeat.GetTypeName2()}，特征名称：{swFeat.Name}");
+            //特征类型：ICE，特征名称：Cut-Extrude1
+        }
+        //轴测图
+        swModel.ShowNamedView2("", (int)swStandardViews_e.swIsometricView);
+        swModel.ViewZoomtofit2();
+    }
+
+
 
 }

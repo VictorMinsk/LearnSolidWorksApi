@@ -34,3 +34,5 @@ E:\CSharp\repos\LearnSolidWorksApi\LearnSolidWorksApi\obj\Debug\net6.0\refint\Le
 E:\CSharp\repos\LearnSolidWorksApi\LearnSolidWorksApi\obj\Debug\net6.0\LearnSolidWorksApi.pdb
 E:\CSharp\repos\LearnSolidWorksApi\LearnSolidWorksApi\obj\Debug\net6.0\LearnSolidWorksApi.genruntimeconfig.cache
 E:\CSharp\repos\LearnSolidWorksApi\LearnSolidWorksApi\obj\Debug\net6.0\ref\LearnSolidWorksApi.dll
+E:\CSharp\repos\LearnSolidWorksApi\LearnSolidWorksApi\bin\Debug\net6.0\SolidWorks.Interop.swcommands.dll
+E:\CSharp\repos\LearnSolidWorksApi\LearnSolidWorksApi\bin\Debug\net6.0\SolidWorks.Interop.swpublished.dll

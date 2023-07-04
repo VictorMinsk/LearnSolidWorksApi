@@ -13,4 +13,7 @@
     <SourceRoot Include="C:\Users\Administrator\.nuget\packages\" />
     <SourceRoot Include="C:\Program Files (x86)\Microsoft Visual Studio\Shared\NuGetPackages\" />
   </ItemGroup>
+  <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <PkgVisiativ_SOLIDWORKS_Interop Condition=" '$(PkgVisiativ_SOLIDWORKS_Interop)' == '' ">C:\Users\Administrator\.nuget\packages\visiativ.solidworks.interop\31.2.1</PkgVisiativ_SOLIDWORKS_Interop>
+  </PropertyGroup>
 </Project>
