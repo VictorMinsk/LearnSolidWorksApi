@@ -258,6 +258,41 @@ public class EditFeature
         swModel.ViewZoomtofit2();
     }
 
+    /// <summary>
+    /// 旋转切除
+    /// </summary>
+    public void RevolveCut()
+    {
+        FeatureExtrusion();
+        //选择正方体上的面
 
+        var swModel = (ModelDoc2)_swApp.ActiveDoc;
+        var swModelDocExt = swModel.Extension;
+        var swSketchMgr = swModel.SketchManager;
+        var swFeatureMgr = swModel.FeatureManager;
+
+        swModel.ClearSelection2(true);
+        swModelDocExt.SelectByID2("", "FACE", 0, 0, 2, false, 0, null, 0);
+        swSketchMgr.InsertSketch(true);
+        swSketchMgr.CreateCenterLine(0, 0, 0, 0, 1, 0);
+        swSketchMgr.CreateCircleByRadius(0.5, 1, 0, 0.1);
+        var swFeat = swFeatureMgr.FeatureRevolve2(
+            true, true, false, true, //与旋转结果有关的参数
+            false, false, //与旋转方向相关的参数
+            (int)swEndConditions_e.swEndCondBlind, 0, //旋转结束条件
+            360 * Math.PI / 180, 0, //旋转角度相关的参数
+            false, false, 0, 0, //与偏移相关的参数(到离指定面指定的距离)            
+            (int)swThinWallType_e.swThinWallOneDirection, 0, 0, //与薄壁类型相关的参数
+            true, false, true//与多实体相关的参数
+        );
+        if (swFeat != null)
+        {
+            Console.WriteLine($"特征类型：{swFeat.GetTypeName2()}，特征名称：{swFeat.Name}");
+            //特征类型：RevCut，特征名称：Cut-Revolve1
+        }
+        //轴测图
+        swModel.ShowNamedView2("", (int)swStandardViews_e.swIsometricView);
+        swModel.ViewZoomtofit2();
+    }
 
 }

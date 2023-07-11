@@ -56,6 +56,6 @@ EditFeature editFeature = new EditFeature(swApp!);
 //放样凸台基体
 //editFeature.InsertProtrusionBlend();
 //拉伸切除
-editFeature.FeatureCut();
-
-
+//editFeature.FeatureCut();
+//旋转切除
+editFeature.RevolveCut();
