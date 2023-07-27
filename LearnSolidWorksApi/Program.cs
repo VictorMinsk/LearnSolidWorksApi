@@ -58,4 +58,6 @@ EditFeature editFeature = new EditFeature(swApp!);
 //拉伸切除
 //editFeature.FeatureCut();
 //旋转切除
-editFeature.RevolveCut();
+//editFeature.RevolveCut();
+//放样切除
+editFeature.SweepCut();

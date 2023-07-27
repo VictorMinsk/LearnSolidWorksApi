@@ -295,4 +295,56 @@ public class EditFeature
         swModel.ViewZoomtofit2();
     }
 
+
+    public void SweepCut()
+    {
+        FeatureExtrusion();
+        //选择正方体上的面
+
+        var swModel = (ModelDoc2)_swApp.ActiveDoc;
+        var swModelDocExt = swModel.Extension;
+        var swSketchMgr = swModel.SketchManager;
+        var swFeatureMgr = swModel.FeatureManager;
+        swModel.ClearSelection2(true);
+        swModelDocExt.SelectByID2("", "FACE", 0, 0, 2, false, 0, null, 0);
+        swSketchMgr.InsertSketch(true);
+        swSketchMgr.CreateCircleByRadius(0, 1, 0, 0.2);
+        swSketchMgr.InsertSketch(true);
+
+        swModel.ClearSelection2(true);
+        //swModelDocExt.SelectByID2("", "FACE", 0, 1, 1, false, 0, null, 0);
+        swModelDocExt.SelectByRay(0, 2, 1, 0, -1, 0, 0.001, (int)swSelectType_e.swSelFACES, false, 0, 0);
+
+        swSketchMgr.InsertSketch(true);
+        double[] points=new double[12];
+        points[0] = 0;
+        points[1] = 0;
+        points[3] = 0.2;
+        points[4] = -0.5;
+        points[6] = -0.2;
+        points[7] = -1.5;
+        points[9] = 0;
+        points[10] = -2;
+        swSketchMgr.CreateSpline3(points, null, null, true, out _);
+        swSketchMgr.InsertSketch(true);
+        swModel.ClearSelection2(true);
+
+
+        //选择扫描草图轮廓，标记为1
+        swModelDocExt.SelectByID2("", "SKETCH", 0.2, 1, 2, false, 1, null, 0);
+        //选择扫描草图路径，标记为4
+        swModelDocExt.SelectByID2("", "SKETCH", 0, 1, 0, true, 4, null, 0);
+
+        var swSweep = (SweepFeatureData)swFeatureMgr.CreateDefinition((int)swFeatureNameID_e.swFmSweepCut);
+        var swFeat = swFeatureMgr.CreateFeature(swSweep);
+
+        if (swFeat != null)
+        {
+            Console.WriteLine($"特征类型：{swFeat.GetTypeName2()}，特征名称：{swFeat.Name}");
+        }
+
+        //轴测图
+        swModel.ShowNamedView2("", (int)swStandardViews_e.swIsometricView);
+        swModel.ViewZoomtofit2();
+    }
 }
