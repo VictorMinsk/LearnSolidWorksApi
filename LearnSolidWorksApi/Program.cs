@@ -54,10 +54,12 @@ EditFeature editFeature = new EditFeature(swApp!);
 //扫描凸台基体
 //editFeature.Sweep();
 //放样凸台基体
-//editFeature.InsertProtrusionBlend();
+//editFeature.Loft();
 //拉伸切除
 //editFeature.FeatureCut();
 //旋转切除
 //editFeature.RevolveCut();
+//扫描切除
+//editFeature.SweepCut();
 //放样切除
-editFeature.SweepCut();
+editFeature.LoftCut();

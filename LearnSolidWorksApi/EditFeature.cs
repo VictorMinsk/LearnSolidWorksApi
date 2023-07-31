@@ -145,7 +145,7 @@ public class EditFeature
     /// <summary>
     /// 放样特征
     /// </summary>
-    public void InsertProtrusionBlend()
+    public void Loft()
     {
         var swModel = NewDocument();
         var swModelDocExt = swModel.Extension;
@@ -337,6 +337,47 @@ public class EditFeature
 
         var swSweep = (SweepFeatureData)swFeatureMgr.CreateDefinition((int)swFeatureNameID_e.swFmSweepCut);
         var swFeat = swFeatureMgr.CreateFeature(swSweep);
+
+        if (swFeat != null)
+        {
+            Console.WriteLine($"特征类型：{swFeat.GetTypeName2()}，特征名称：{swFeat.Name}");
+        }
+
+        //轴测图
+        swModel.ShowNamedView2("", (int)swStandardViews_e.swIsometricView);
+        swModel.ViewZoomtofit2();
+    }
+
+
+    public void LoftCut()
+    {
+        FeatureExtrusion();
+        //选择正方体上的面
+
+        var swModel = (ModelDoc2)_swApp.ActiveDoc;
+        var swModelDocExt = swModel.Extension;
+        var swSketchMgr = swModel.SketchManager;
+        var swFeatureMgr = swModel.FeatureManager;
+        swModel.ClearSelection2(true);
+        //正面
+        swModelDocExt.SelectByRay(0, 0, 3, 0, 0, -1, 0.001, (int)swSelectType_e.swSelFACES, false, 0, 0);
+        swSketchMgr.InsertSketch(true);
+        swSketchMgr.CreateCenterRectangle(0, 0, 0, 0.7, 0.7, 0);
+        swSketchMgr.InsertSketch(true);
+        swModel.ClearSelection2(true);
+
+        //背面
+        swModelDocExt.SelectByRay(0, 0, -2, 0, 0, 1, 0.001, (int)swSelectType_e.swSelFACES, false, 0, 0);
+        swSketchMgr.InsertSketch(true);
+        swSketchMgr.CreateCircleByRadius(0, 0, 0, 0.5);
+        swSketchMgr.InsertSketch(true);
+        swModel.ClearSelection2(true);
+
+        //选择轮廓，标记为1，选择顺序与放样方向一致
+        swModelDocExt.SelectByID2("", "SKETCH", 0.5, 0, 0, false, 1, null, 0);
+        swModelDocExt.SelectByID2("", "SKETCH", 0.7, 0.7, 2, true, 1, null, 0);
+
+        var swFeat = swFeatureMgr.InsertCutBlend(false, true, true, 0.01, 0, 0, false, 0, 0, 0, true, true);
 
         if (swFeat != null)
         {
