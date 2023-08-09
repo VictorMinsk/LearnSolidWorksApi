@@ -295,7 +295,9 @@ public class EditFeature
         swModel.ViewZoomtofit2();
     }
 
-
+    /// <summary>
+    /// 扫描切除
+    /// </summary>
     public void SweepCut()
     {
         FeatureExtrusion();
@@ -348,7 +350,9 @@ public class EditFeature
         swModel.ViewZoomtofit2();
     }
 
-
+    /// <summary>
+    /// 放样切除
+    /// </summary>
     public void LoftCut()
     {
         FeatureExtrusion();
@@ -388,4 +392,68 @@ public class EditFeature
         swModel.ShowNamedView2("", (int)swStandardViews_e.swIsometricView);
         swModel.ViewZoomtofit2();
     }
+
+    /// <summary>
+    /// 异型孔向导
+    /// </summary>
+    public void HoleWizard()
+    {
+        var swModel = NewDocument();
+        var swModelDocExt = swModel.Extension;
+        var swSketchMgr = swModel.SketchManager;
+        var swFeatureMgr = swModel.FeatureManager;
+
+        swModelDocExt.SelectByID2("Front Plane", "PLANE", 0, 0, 0, false, 0, null, 0);
+        swSketchMgr.InsertSketch(true);
+
+        swSketchMgr.CreateCenterRectangle(0, 0, 0, 10d/1000d, 5d/1000d, 0);
+
+        swFeatureMgr.FeatureExtrusion2(true, false, false, 0, 0, 50d/1000d, 0, false, false, false, false,0, 0, false, false, false, false, true, true, true, 0, 0, false);
+
+        swModelDocExt.SelectByRay(0, 10d/1000d, 30d/1000d, 0,
+            -1, 0, 0.001, 2, false, 0, 0);
+
+        var swHoleFeat = swFeatureMgr.HoleWizard5((int)swWzdGeneralHoleTypes_e.swWzdCounterBore,//0,孔或槽的类型，这里是柱形沉头孔
+            (int)swWzdHoleStandards_e.swStandardISO,//8，使用的标准
+            (int)swWzdHoleStandardFastenerTypes_e.swStandardISOSocketHeadCap,//139，紧固件类型
+            "M6",//孔规格大小
+            (int)swEndConditions_e.swEndCondThroughAll, //终止条件，完全贯穿
+            0.0066,//孔直径
+            7.86674288964986E-03,//孔深度
+            -1, //槽长度，这里不适用，赋值-1
+            0.011,//沉头直径
+            0.0064,//沉头深度
+            0, //头部间隙
+            1, //螺钉套合，1正常
+            0, //底部钻孔角度，贯穿时不适用
+            0.01105, //近端锥孔直径
+            1.5707963267949, //近端锥孔角度90度
+            0,//螺钉下锥孔直径
+            0, //螺钉下锥孔角度
+            0,//远端锥孔直径
+            0,//远端锥孔角度
+            0, //偏移量，这里不适用
+            "",//螺纹线等级，不适用
+            false,//方向，不反转
+            true,//特征影响选定实体
+            true, //自动选择影响实体
+            true,//装配体特征影响零部件
+            true,//自动选择零部件
+                 false);//装配体特征传播特征到零部件
+
+
+        if (swHoleFeat != null)
+        {
+            Console.WriteLine($"特征类型：{swHoleFeat.GetTypeName2()}，特征名称：{swHoleFeat.Name}");
+            //特征类型：HoleWzd，特征名称：M6 六角凹头螺钉的柱形沉头孔1
+        }
+
+        //轴测图
+        swModel.ShowNamedView2("", (int)swStandardViews_e.swIsometricView);
+        swModel.ViewZoomtofit2();
+
+    }
+
+
+
 }

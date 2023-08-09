@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "j7LqId+VpRYv9bd+mdPet0uQ1/r58qPe+9DPxVsH/OedARHN7TflbygtMmdvAzJnniHKiHGfw/96d5/rqF9uCw==",
+  "dgSpecHash": "G/t9muvQ0D7UD1bTpd870vdXwiH5MsMAjw0Xk0X+bgfZojaAM6vS+RtqqOQx5/YGxADtvvLWRqzMy8tJ1F6LvA==",
   "success": true,
   "projectFilePath": "E:\\CSharp\\repos\\LearnSolidWorksApi\\LearnSolidWorksApi\\LearnSolidWorksApi.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\Administrator\\.nuget\\packages\\visiativ.solidworks.interop\\31.2.1\\visiativ.solidworks.interop.31.2.1.nupkg.sha512"
+    "C:\\Users\\Felix.Zhu\\.nuget\\packages\\visiativ.solidworks.interop\\31.2.1\\visiativ.solidworks.interop.31.2.1.nupkg.sha512"
   ],
   "logs": []
 }

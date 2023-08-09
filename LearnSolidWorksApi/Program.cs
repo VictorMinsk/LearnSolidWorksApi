@@ -62,4 +62,9 @@ EditFeature editFeature = new EditFeature(swApp!);
 //扫描切除
 //editFeature.SweepCut();
 //放样切除
-editFeature.LoftCut();
+//editFeature.LoftCut();
+//异型孔向导
+editFeature.HoleWizard();
+
+
+
