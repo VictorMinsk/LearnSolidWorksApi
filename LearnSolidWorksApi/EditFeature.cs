@@ -1,5 +1,6 @@
 ﻿using SolidWorks.Interop.sldworks;
 using SolidWorks.Interop.swconst;
+using System.Collections.Generic;
 
 namespace LearnSolidWorksApi;
 
@@ -413,7 +414,7 @@ public class EditFeature
         swModelDocExt.SelectByRay(0, 10d/1000d, 30d/1000d, 0,
             -1, 0, 0.001, 2, false, 0, 0);
 
-        var swHoleFeat = swFeatureMgr.HoleWizard5((int)swWzdGeneralHoleTypes_e.swWzdCounterBore,//0,孔或槽的类型，这里是柱形沉头孔
+        var swHoleFeature = swFeatureMgr.HoleWizard5((int)swWzdGeneralHoleTypes_e.swWzdCounterBore,//0,孔或槽的类型，这里是柱形沉头孔
             (int)swWzdHoleStandards_e.swStandardISO,//8，使用的标准
             (int)swWzdHoleStandardFastenerTypes_e.swStandardISOSocketHeadCap,//139，紧固件类型
             "M6",//孔规格大小
@@ -441,10 +442,30 @@ public class EditFeature
             true,//自动选择零部件
                  false);//装配体特征传播特征到零部件
 
+        var swSketchFeature = (Feature)swHoleFeature.GetFirstSubFeature();
+        swSketchFeature.Select2(false, 0);
+        swModel.EditSketch();
+        var swSelectionManager = (SelectionMgr)swModel.SelectionManager;
+        var swSketch = (Sketch)swSketchFeature.GetSpecificFeature2();
 
-        if (swHoleFeat != null)
+        var swSketchPointArray = swSketch.GetSketchPoints2() as object[];
+        for (int i = 0; i < swSketchPointArray.Length; i++)
         {
-            Console.WriteLine($"特征类型：{swHoleFeat.GetTypeName2()}，特征名称：{swHoleFeat.Name}");
+            swSelectionManager.AddSelectionListObject(swSketchPointArray[i], null);
+            swModel.EditDelete();
+        }
+        //实际使用中，可以通过参数控制位置坐标
+        swSketchMgr.CreatePoint(0, -10d / 1000d, 0);
+        swSketchMgr.CreatePoint(0, -25d / 1000d, 0);
+        swSketchMgr.CreatePoint(0, -40d / 1000d, 0);
+
+        swSketchMgr.InsertSketch(true);
+
+
+
+        if (swHoleFeature != null)
+        {
+            Console.WriteLine($"特征类型：{swHoleFeature.GetTypeName2()}，特征名称：{swHoleFeature.Name}");
             //特征类型：HoleWzd，特征名称：M6 六角凹头螺钉的柱形沉头孔1
         }
 
