@@ -23,7 +23,7 @@ public class EditFeature
         //使用默认模板新建零件
         return (_swApp.NewDocument(defaultTemplate, 0, 0, 0) as ModelDoc2)!;
     }
-    
+
     /// <summary>
     /// 拉伸特征
     /// </summary>
@@ -74,14 +74,14 @@ public class EditFeature
 
         swModelDocExt.SelectByID2("Front Plane", "PLANE", 0, 0, 0, false, 0, null, (int)swSelectOption_e.swSelectOptionDefault);
         swSketchMgr.InsertSketch(true);
-        
+
         //中心线
         swSketchMgr.CreateCenterLine(0, 0, 0, 0, 2, 0);
         //旋转草图
         swSketchMgr.CreateCircleByRadius(-2, 1, 0, 0.5);
         swSketchMgr.InsertSketch(true);
         swModel.ViewZoomtofit2();
-        
+
         swModel.ClearSelection2(true);
         //根据坐标选择中心线，标记为4
         swModelDocExt.SelectByID2("", "EXTSKETCHSEGMENT", 0, 1, 0, false, 4, null, 0);
@@ -91,9 +91,9 @@ public class EditFeature
         var swFeat = swFeatureMgr.FeatureRevolve2(
             true, true, false, false, //与旋转结果有关的参数
             false, false, //与旋转方向相关的参数
-            (int)swEndConditions_e.swEndCondBlind,0, //旋转结束条件
+            (int)swEndConditions_e.swEndCondBlind, 0, //旋转结束条件
             360 * Math.PI / 180, 0, //旋转角度相关的参数
-            false, false,0, 0, //与偏移相关的参数(到离指定面指定的距离)            
+            false, false, 0, 0, //与偏移相关的参数(到离指定面指定的距离)            
             (int)swThinWallType_e.swThinWallOneDirection, 0, 0, //与薄壁类型相关的参数
             true, false, true//与多实体相关的参数
             );
@@ -124,7 +124,7 @@ public class EditFeature
         swSketchMgr.InsertSketch(true);
         swSketchMgr.CreateArc(-2, 0, 0, 0, 0, 0, -2, 2, 0, 1);
         swSketchMgr.InsertSketch(true);
-        
+
         swModel.ViewZoomtofit2();
 
         swModel.ClearSelection2(true);
@@ -222,7 +222,6 @@ public class EditFeature
     {
 
         FeatureExtrusion();
-        //选择正方体上的面
 
         var swModel = (ModelDoc2)_swApp.ActiveDoc;
         var swModelDocExt = swModel.Extension;
@@ -237,19 +236,19 @@ public class EditFeature
             (int)swSketchSlotLengthType_e.swSketchSlotLengthType_FullLength,
             0.5, -0.25, 0, 0, 0.25, 0, 0, 0.5, 0.25, 0, 1, true);
         //绘制草图后我们直接创建拉伸切除
-       var swFeat = swFeatureMgr.FeatureCut4(
-            true, false, false, //拉伸切除方向
-            (int)swEndConditions_e.swEndCondBlind, 0, //结束条件相关
-            1, 0, //拉伸深度
-            false, false, false, true, 0, 0, //拔模相关
-            false, false, false, false, //结束条件为到离指定面指定的距离，反向等距和转化曲面
-            false, //钣金正交切除（非钣金使用false）
-            false, true, //多实体，特征范围
-            false, true, false, //装配体特征范围
-            (int)swStartConditions_e.swStartSketchPlane, 0, false, //结束条件
-            false//钣金零件，优化几何图形
-        );
-       if (swFeat != null)
+        var swFeat = swFeatureMgr.FeatureCut4(
+             true, false, false, //拉伸切除方向
+             (int)swEndConditions_e.swEndCondBlind, 0, //结束条件相关
+             1, 0, //拉伸深度
+             false, false, false, true, 0, 0, //拔模相关
+             false, false, false, false, //结束条件为到离指定面指定的距离，反向等距和转化曲面
+             false, //钣金正交切除（非钣金使用false）
+             false, true, //多实体，特征范围
+             false, true, false, //装配体特征范围
+             (int)swStartConditions_e.swStartSketchPlane, 0, false, //结束条件
+             false//钣金零件，优化几何图形
+         );
+        if (swFeat != null)
         {
             Console.WriteLine($"特征类型：{swFeat.GetTypeName2()}，特征名称：{swFeat.Name}");
             //特征类型：ICE，特征名称：Cut-Extrude1
@@ -265,7 +264,6 @@ public class EditFeature
     public void RevolveCut()
     {
         FeatureExtrusion();
-        //选择正方体上的面
 
         var swModel = (ModelDoc2)_swApp.ActiveDoc;
         var swModelDocExt = swModel.Extension;
@@ -302,7 +300,6 @@ public class EditFeature
     public void SweepCut()
     {
         FeatureExtrusion();
-        //选择正方体上的面
 
         var swModel = (ModelDoc2)_swApp.ActiveDoc;
         var swModelDocExt = swModel.Extension;
@@ -319,7 +316,7 @@ public class EditFeature
         swModelDocExt.SelectByRay(0, 2, 1, 0, -1, 0, 0.001, (int)swSelectType_e.swSelFACES, false, 0, 0);
 
         swSketchMgr.InsertSketch(true);
-        double[] points=new double[12];
+        double[] points = new double[12];
         points[0] = 0;
         points[1] = 0;
         points[3] = 0.2;
@@ -357,7 +354,6 @@ public class EditFeature
     public void LoftCut()
     {
         FeatureExtrusion();
-        //选择正方体上的面
 
         var swModel = (ModelDoc2)_swApp.ActiveDoc;
         var swModelDocExt = swModel.Extension;
@@ -409,7 +405,7 @@ public class EditFeature
 
         swSketchMgr.CreateCenterRectangle(0, 0, 0, 10d/1000d, 5d/1000d, 0);
 
-        swFeatureMgr.FeatureExtrusion2(true, false, false, 0, 0, 50d/1000d, 0, false, false, false, false,0, 0, false, false, false, false, true, true, true, 0, 0, false);
+        swFeatureMgr.FeatureExtrusion2(true, false, false, 0, 0, 50d/1000d, 0, false, false, false, false, 0, 0, false, false, false, false, true, true, true, 0, 0, false);
 
         swModelDocExt.SelectByRay(0, 10d/1000d, 30d/1000d, 0,
             -1, 0, 0.001, 2, false, 0, 0);
@@ -475,6 +471,377 @@ public class EditFeature
 
     }
 
+    public void FaceFillet()
+    {
+        FeatureExtrusion();
 
+        var swModel = (ModelDoc2)_swApp.ActiveDoc;
+        var swModelDocExt = swModel.Extension;
+        var swSketchMgr = swModel.SketchManager;
+        var swFeatureMgr = swModel.FeatureManager;
+
+
+        //使用简单的圆角类型
+        var swFilletData = (SimpleFilletFeatureData2
+            )swFeatureMgr.CreateDefinition((int)swFeatureNameID_e.swFmFillet);
+        //初始化圆角特征数据对象，使用面圆角
+        swFilletData.Initialize((int)swSimpleFilletType_e.swFaceFillet);
+
+        swModel.ClearSelection2(true);
+        //正面，标记为2
+        swModelDocExt.SelectByRay(0, 0, 3, 0, 0, -1, 0.001, (int)swSelectType_e.swSelFACES, false, 2, 0);
+        //顶面，标记为4
+        swModelDocExt.SelectByRay(0, 3, 0, 0, -1, 0, 0.001, (int)swSelectType_e.swSelFACES, true, 4, 0);
+
+        swFilletData.AsymmetricFillet = true;
+        swFilletData.DefaultRadius = 0.1d;
+        swFilletData.DefaultDistance = 0.2d;
+        //指定特征圆角轮廓类型
+        swFilletData.ConicTypeForCrossSectionProfile = (int)swFeatureFilletProfileType_e.swFeatureFilletCircular;
+
+
+        var swFeat = swFeatureMgr.CreateFeature(swFilletData);
+
+        if (swFeat != null)
+        {
+            Console.WriteLine($"特征类型：{swFeat.GetTypeName2()}，特征名称：{swFeat.Name}");
+        }
+
+    }
+
+    public void ConstRadiusFillet()
+    {
+        FeatureExtrusion();
+
+        var swModel = (ModelDoc2)_swApp.ActiveDoc;
+        var swModelDocExt = swModel.Extension;
+        var swSketchMgr = swModel.SketchManager;
+        var swFeatureMgr = swModel.FeatureManager;
+        var swSelMgr = (SelectionMgr)swModel.SelectionManager;
+
+        //使用简单的圆角类型
+        var swFilletData = (SimpleFilletFeatureData2
+            )swFeatureMgr.CreateDefinition((int)swFeatureNameID_e.swFmFillet);
+        //初始化圆角特征数据对象，使用固定大小圆角
+        swFilletData.Initialize((int)swSimpleFilletType_e.swConstRadiusFillet);
+
+        swModel.ClearSelection2(true);
+
+        //Call IModelDocExtension::SelectByID2 with Mark = 1 to select the edges, faces, features, or loops to fillet. 
+        //选择边，标记为1
+        swModelDocExt.SelectByRay(0, 3, 2, 0, -1, 0, 0.001, (int)swSelectType_e.swSelEDGES, false, 1, 0);
+        //其实可以不用对edges属性赋值
+        //var swEdge = swSelMgr.GetSelectedObject6(1, 1);
+        //var edges = new [] { swEdge };
+        //swFilletData.Edges=edges;
+
+        //选择面
+        //swModelDocExt.SelectByRay(0, 3, 1, 0, -1, 0, 0.001, (int)swSelectType_e.swSelFACES, false, 1, 0);
+
+
+        //选择特征
+        //var extrudeFeat = (Feature)swModel.FeatureByPositionReverse(0);//选择特征树中的最后一个特征
+        //extrudeFeat.Select2(false, 1);
+
+
+        swFilletData.AsymmetricFillet = false;
+        swFilletData.DefaultRadius = 0.1d;
+        //指定特征圆角轮廓类型
+        swFilletData.ConicTypeForCrossSectionProfile = (int)swFeatureFilletProfileType_e.swFeatureFilletCircular;
+
+
+        var swFeat = swFeatureMgr.CreateFeature(swFilletData);
+
+        if (swFeat != null)
+        {
+            Console.WriteLine($"特征类型：{swFeat.GetTypeName2()}，特征名称：{swFeat.Name}");
+        }
+    }
+
+    public void FullRoundFillet()
+    {
+        FeatureExtrusion();
+
+        var swModel = (ModelDoc2)_swApp.ActiveDoc;
+        var swModelDocExt = swModel.Extension;
+        var swSketchMgr = swModel.SketchManager;
+        var swFeatureMgr = swModel.FeatureManager;
+        var swSelMgr = (SelectionMgr)swModel.SelectionManager;
+
+        //使用简单的圆角类型
+        var swFilletData = (SimpleFilletFeatureData2
+            )swFeatureMgr.CreateDefinition((int)swFeatureNameID_e.swFmFillet);
+        //初始化圆角特征数据对象，使用完整圆角
+        swFilletData.Initialize((int)swSimpleFilletType_e.swFullRoundFillet);
+
+        swModel.ClearSelection2(true);
+        //左侧面，标记为2
+        swModelDocExt.SelectByRay(-3, 0, 1, 1, 0, 0, 0.001, (int)swSelectType_e.swSelFACES, false, 2, 0);
+        //正面，标记为512
+        swModelDocExt.SelectByRay(0, 0, 3, 0, 0, -1, 0.001, (int)swSelectType_e.swSelFACES, true, 512, 0);
+        //右侧面，标记为4
+        swModelDocExt.SelectByRay(3, 0, 1, -1, 0, 0, 0.001, (int)swSelectType_e.swSelFACES, true, 4, 0);
+
+        //设置传播到相切面
+        swFilletData.PropagateToTangentFaces = true;
+
+
+        var swFeat = swFeatureMgr.CreateFeature(swFilletData);
+
+        if (swFeat != null)
+        {
+            Console.WriteLine($"特征类型：{swFeat.GetTypeName2()}，特征名称：{swFeat.Name}");
+        }
+
+    }
+
+    public void Chamfer()
+    {
+        FeatureExtrusion();
+
+        var swModel = (ModelDoc2)_swApp.ActiveDoc;
+        var swModelDocExt = swModel.Extension;
+        var swSketchMgr = swModel.SketchManager;
+        var swFeatureMgr = swModel.FeatureManager;
+        var swSelMgr = (SelectionMgr)swModel.SelectionManager;
+        swModel.ClearSelection2(true);
+        swModelDocExt.SelectByRay(0, 3, 2, 0, -1, 0, 0.001, (int)swSelectType_e.swSelEDGES, false, 0, 0);
+
+        var swFeat = swFeatureMgr.InsertFeatureChamfer(
+            (int)swFeatureChamferOption_e.swFeatureChamferTangentPropagation,
+            (int)swChamferType_e.swChamferAngleDistance,
+            0.1, Math.PI/4d, 0,
+            0, 0, 0);
+
+        //注意distance的参数
+        //var swFeat = swFeatureMgr.InsertFeatureChamfer(
+        //    (int)swFeatureChamferOption_e.swFeatureChamferTangentPropagation,
+        //    (int)swChamferType_e.swChamferDistanceDistance,
+        //    0.1, 0, 0.2,
+        //    0, 0, 0);
+
+        if (swFeat != null)
+        {
+            Console.WriteLine($"特征类型：{swFeat.GetTypeName2()}，特征名称：{swFeat.Name}");
+        }
+    }
+
+    public void Mirror()
+    {
+        FeatureExtrusion();
+        var swModel = (ModelDoc2)_swApp.ActiveDoc;
+        var swModelDocExt = swModel.Extension;
+        var swSketchMgr = swModel.SketchManager;
+        var swFeatureMgr = swModel.FeatureManager;
+        var swSelMgr = (SelectionMgr)swModel.SelectionManager;
+        swModel.ClearSelection2(true);
+        //选择顶面，再做一个拉伸特征
+        swModelDocExt.SelectByRay(0, 3, 0, 0, -1, 0, 0.001, (int)swSelectType_e.swSelFACES, true, 0, 0);
+        swSketchMgr.InsertSketch(true);
+        swSketchMgr.CreateCircleByRadius(-0.5d, -1.5d, 0, 0.4d);
+        var extrudeFeat = swFeatureMgr.FeatureExtrusion3(
+            true, false, false,//与拉伸方向有关
+            (int)swEndConditions_e.swEndCondBlind, (int)swEndConditions_e.swEndCondBlind, //结束条件相关
+            0.5, 0, //拉伸深度
+            false, false, false, true, 0, 0, //拔模相关
+            false, false, false, false, //结束条件为到离指定面指定的距离，反向等距和转化曲面
+            true, false, true, //多实体合并结果
+            (int)swStartConditions_e.swStartSketchPlane, 0, false); //拉伸起始条件，等距
+
+        swModel.ClearSelection2(true);
+        //要镜像的特征，标记为1
+        extrudeFeat.Select2(false, 1);
+        //镜像面，标记为2
+        swModelDocExt.SelectByID2("Right Plane", "PLANE", 0, 0, 0, true, 2, null, 0);
+        var swFeat = swFeatureMgr.InsertMirrorFeature2(
+            false,//取值true是阵列实体，取值false是阵列特征或面
+            false, //取值true表示只镜像几何体特征，取值false表示求解所有特征，仅适用于镜像特征
+            false, //合并所有镜像实体，仅适用于镜像实体
+            false,//knit表面，仅适用于镜像面
+            (int)swFeatureScope_e.swFeatureScope_AllBodies);//受镜像特征影响的实体
+
+        if (swFeat != null)
+        {
+            Console.WriteLine($"特征类型：{swFeat.GetTypeName2()}，特征名称：{swFeat.Name}");
+        }
+
+        //轴测图
+        swModel.ShowNamedView2("", (int)swStandardViews_e.swIsometricView);
+        swModel.ViewZoomtofit2();
+    }
+
+    public void LinearPattern()
+    {
+        FeatureExtrusion();
+        var swModel = (ModelDoc2)_swApp.ActiveDoc;
+        var swModelDocExt = swModel.Extension;
+        var swSketchMgr = swModel.SketchManager;
+        var swFeatureMgr = swModel.FeatureManager;
+        var swSelMgr = (SelectionMgr)swModel.SelectionManager;
+        swModel.ClearSelection2(true);
+        //选择顶面，再做一个拉伸特征
+        swModelDocExt.SelectByRay(0, 3, 0, 0, -1, 0, 0.001, (int)swSelectType_e.swSelFACES, true, 0, 0);
+        swSketchMgr.InsertSketch(true);
+        swSketchMgr.CreateCircleByRadius(-0.5d, -1.5d, 0, 0.4d);
+        var extrudeFeat = swFeatureMgr.FeatureExtrusion3(
+            true, false, false,//与拉伸方向有关
+            (int)swEndConditions_e.swEndCondBlind, (int)swEndConditions_e.swEndCondBlind, //结束条件相关
+            0.5, 0, //拉伸深度
+            false, false, false, true, 0, 0, //拔模相关
+            false, false, false, false, //结束条件为到离指定面指定的距离，反向等距和转化曲面
+            true, false, true, //多实体合并结果
+            (int)swStartConditions_e.swStartSketchPlane, 0, false); //拉伸起始条件，等距
+
+        swModel.ClearSelection2(true);
+        //Select feature to pattern
+        extrudeFeat.Select2(false, 4);
+        //Select edges for Direction 1 and Direction 2
+        swModelDocExt.SelectByRay(0, 3, 2, 0, -1, 0, 0.001, (int)swSelectType_e.swSelEDGES, true, 1, 0);
+        swModelDocExt.SelectByRay(-1, 3, 1, 0, -1, 0, 0.001, (int)swSelectType_e.swSelEDGES, true, 2, 0);
+
+        //Create linear pattern
+        var swLinearPatternData = (LinearPatternFeatureData
+            )swFeatureMgr.CreateDefinition((int)swFeatureNameID_e.swFmLPattern);
+
+        swLinearPatternData.D1EndCondition = 0;//阵列的方式，有间距与实例数和到参考
+        swLinearPatternData.D1ReverseDirection = true;//反向
+        swLinearPatternData.D1Spacing = 1d;//间距，
+        swLinearPatternData.D1TotalInstances = 2;//实例数
+
+        swLinearPatternData.D2EndCondition = 0;
+        swLinearPatternData.D2PatternSeedOnly = false;//方向2，只阵列源
+        swLinearPatternData.D2ReverseDirection = false;
+        swLinearPatternData.D2Spacing = 1d;
+        swLinearPatternData.D2TotalInstances = 2;
+
+        swLinearPatternData.GeometryPattern = false;//集合体阵列
+        swLinearPatternData.VarySketch = false;
+        var swFeat = swFeatureMgr.CreateFeature(swLinearPatternData);
+
+
+        if (swFeat != null)
+        {
+            Console.WriteLine($"特征类型：{swFeat.GetTypeName2()}，特征名称：{swFeat.Name}");
+        }
+
+        //轴测图
+        swModel.ShowNamedView2("", (int)swStandardViews_e.swIsometricView);
+        swModel.ViewZoomtofit2();
+
+    }
+
+    public void CircularPattern()
+    {
+        var swModel = NewDocument();
+        var swModelDocExt = swModel.Extension;
+        var swSketchMgr = swModel.SketchManager;
+        var swFeatureMgr = swModel.FeatureManager;
+
+        swModelDocExt.SelectByID2("Top Plane", "PLANE", 0, 0, 0, false, 0, null, (int)swSelectOption_e.swSelectOptionDefault);
+        swSketchMgr.InsertSketch(true);
+
+        swSketchMgr.CreateCircleByRadius(0, 0, 0, 1);
+        var baseFeat = swFeatureMgr.FeatureExtrusion3(
+            true, false, false,//与拉伸方向有关
+            (int)swEndConditions_e.swEndCondBlind, (int)swEndConditions_e.swEndCondBlind, //结束条件相关
+            1, 0, //拉伸深度
+            false, false, false, true, 0, 0, //拔模相关
+            false, false, false, false, //结束条件为到离指定面指定的距离，反向等距和转化曲面
+            true, false, true, //多实体合并结果
+            (int)swStartConditions_e.swStartSketchPlane, 0, false); //拉伸起始条件，等距
+
+
+        swModel.ClearSelection2(true);
+        //选择顶面，再做一个拉伸特征
+        swModelDocExt.SelectByRay(0, 3, 0, 0, -1, 0, 0.001, (int)swSelectType_e.swSelFACES, true, 0, 0);
+        swSketchMgr.InsertSketch(true);
+        swSketchMgr.CreateCircleByRadius(-0.7d, 0, 0, 0.2d);
+        var extrudeFeat = swFeatureMgr.FeatureExtrusion3(
+            true, false, false,//与拉伸方向有关
+            (int)swEndConditions_e.swEndCondBlind, (int)swEndConditions_e.swEndCondBlind, //结束条件相关
+            0.3, 0, //拉伸深度
+            false, false, false, true, 0, 0, //拔模相关
+            false, false, false, false, //结束条件为到离指定面指定的距离，反向等距和转化曲面
+            true, false, true, //多实体合并结果
+            (int)swStartConditions_e.swStartSketchPlane, 0, false); //拉伸起始条件，等距
+
+        //被阵列的特征
+        extrudeFeat.Select2(false, 4);
+        //方向
+        swModelDocExt.SelectByRay(0, 3, 1, 0, -1, 0, 0.001, (int)swSelectType_e.swSelEDGES, true, 1, 0);
+
+        var swCircularPatternData = (CircularPatternFeatureData)swFeatureMgr.CreateDefinition((int)swFeatureNameID_e.swFmCirPattern);
+        swCircularPatternData.EqualSpacing = true;//等间距
+        swCircularPatternData.Spacing = Math.PI*2;//角度
+        swCircularPatternData.TotalInstances = 3;//实例数
+        swCircularPatternData.Direction2 = false;//方向2
+        swCircularPatternData.GeometryPattern = false;//几何体阵列
+        swCircularPatternData.ReverseDirection = false;//反向
+        swCircularPatternData.VarySketch = false;
+
+        var swFeat = swFeatureMgr.CreateFeature(swCircularPatternData);
+
+
+        if (swFeat != null)
+        {
+            Console.WriteLine($"特征类型：{swFeat.GetTypeName2()}，特征名称：{swFeat.Name}");
+        }
+
+        //轴测图
+        swModel.ShowNamedView2("", (int)swStandardViews_e.swIsometricView);
+        swModel.ViewZoomtofit2();
+    }
+
+    public void SketchPattern()
+    {
+        FeatureExtrusion();
+        var swModel = (ModelDoc2)_swApp.ActiveDoc;
+        var swModelDocExt = swModel.Extension;
+        var swSketchMgr = swModel.SketchManager;
+        var swFeatureMgr = swModel.FeatureManager;
+        var swSelMgr = (SelectionMgr)swModel.SelectionManager;
+        swModel.ClearSelection2(true);
+        //选择顶面，绘制一个包含多个点的草图
+        swModelDocExt.SelectByRay(0, 3, 0, 0, -1, 0, 0.001, (int)swSelectType_e.swSelFACES, true, 0, 0);
+        swSketchMgr.InsertSketch(true);
+        swSketchMgr.CreatePoint(-0.5, -0.5, 0);
+        swSketchMgr.CreatePoint(0, -0.7, 0);
+        swSketchMgr.CreatePoint(0.7, -1.2, 0);
+        swSketchMgr.InsertSketch(true);
+
+        swModel.ClearSelection2(true);
+        //选择顶面，再做一个拉伸特征
+        swModelDocExt.SelectByRay(0, 3, 0, 0, -1, 0, 0.001, (int)swSelectType_e.swSelFACES, true, 0, 0);
+        swSketchMgr.InsertSketch(true);
+        swSketchMgr.CreateCircleByRadius(-0.8d, -1.8d, 0, 0.1d);
+        var extrudeFeat = swFeatureMgr.FeatureExtrusion3(
+            true, false, false,//与拉伸方向有关
+            (int)swEndConditions_e.swEndCondBlind, (int)swEndConditions_e.swEndCondBlind, //结束条件相关
+            0.1, 0, //拉伸深度
+            false, false, false, true, 0, 0, //拔模相关
+            false, false, false, false, //结束条件为到离指定面指定的距离，反向等距和转化曲面
+            true, false, true, //多实体合并结果
+            (int)swStartConditions_e.swStartSketchPlane, 0, false); //拉伸起始条件，等距
+
+        swModel.ClearSelection2(true);
+        //Select feature to pattern，选择特征标记为4
+        extrudeFeat.Select2(false, 4);
+        //选择草图标记为64
+        swModelDocExt.SelectByID2("", "SKETCH", 0.7, 1, 1.2, true, 64, null, 0);
+        var swSketchPatternData = (SketchPatternFeatureData)swFeatureMgr.CreateDefinition((int)swFeatureNameID_e.swFmSketchPattern);
+        swSketchPatternData.GeometryPattern = false;//几何体阵列
+        swSketchPatternData.UseCentroid = true;//参考点，重心
+
+        var swFeat = swFeatureMgr.CreateFeature(swSketchPatternData);
+
+        if (swFeat != null)
+        {
+            Console.WriteLine($"特征类型：{swFeat.GetTypeName2()}，特征名称：{swFeat.Name}");
+        }
+
+        //轴测图
+        swModel.ShowNamedView2("", (int)swStandardViews_e.swIsometricView);
+        swModel.ViewZoomtofit2();
+    }
 
 }
