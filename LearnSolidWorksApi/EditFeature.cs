@@ -605,20 +605,45 @@ public class EditFeature
         var swFeatureMgr = swModel.FeatureManager;
         var swSelMgr = (SelectionMgr)swModel.SelectionManager;
         swModel.ClearSelection2(true);
+
         swModelDocExt.SelectByRay(0, 3, 2, 0, -1, 0, 0.001, (int)swSelectType_e.swSelEDGES, false, 0, 0);
 
+        //AngleDistance
         var swFeat = swFeatureMgr.InsertFeatureChamfer(
             (int)swFeatureChamferOption_e.swFeatureChamferTangentPropagation,
             (int)swChamferType_e.swChamferAngleDistance,
             0.1, Math.PI/4d, 0,
             0, 0, 0);
 
-        //注意distance的参数
+        //DistanceDistance
         //var swFeat = swFeatureMgr.InsertFeatureChamfer(
         //    (int)swFeatureChamferOption_e.swFeatureChamferTangentPropagation,
         //    (int)swChamferType_e.swChamferDistanceDistance,
         //    0.1, 0, 0.2,
         //    0, 0, 0);
+
+        //EqualDistance,无效选项,实在没办法使用swChamferDistanceDistance
+        //var swFeat = swFeatureMgr.InsertFeatureChamfer(
+        //          (int)swFeatureChamferOption_e.swFeatureChamferTangentPropagation,
+        //          (int)swChamferType_e.swChamferEqualDistance,
+        //          0, 0, 0.2,
+        //          0.2, 0, 0);
+        //var swFeat = swFeatureMgr.InsertFeatureChamfer(
+        //    (int)swFeatureChamferOption_e.swFeatureChamferTangentPropagation,
+        //    (int)swChamferType_e.swChamferDistanceDistance,
+        //    0.2, 0, 0.2,
+        //    0, 0, 0);
+
+
+
+        //Vertex
+        //swModelDocExt.SelectByRay(1, 3, 2, 0, -1, 0, 0.001, (int)swSelectType_e.swSelVERTICES, false, 0, 0);
+        //var swFeat = swFeatureMgr.InsertFeatureChamfer(
+        //          (int)swFeatureChamferOption_e.swFeatureChamferTangentPropagation,
+        //          (int)swChamferType_e.swChamferVertex,
+        //          0, 0, 0,
+        //          0.1, 0.2, 0.3);
+
 
         if (swFeat != null)
         {
