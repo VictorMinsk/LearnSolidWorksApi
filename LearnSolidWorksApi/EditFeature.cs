@@ -679,7 +679,7 @@ public class EditFeature
         //镜像面，标记为2
         swModelDocExt.SelectByID2("Right Plane", "PLANE", 0, 0, 0, true, 2, null, 0);
         var swFeat = swFeatureMgr.InsertMirrorFeature2(
-            false,//取值true是阵列实体，取值false是阵列特征或面
+            false,//取值true是镜像实体，取值false是镜像特征或面
             false, //取值true表示只镜像几何体特征，取值false表示求解所有特征，仅适用于镜像特征
             false, //合并所有镜像实体，仅适用于镜像实体
             false,//knit表面，仅适用于镜像面
@@ -725,23 +725,23 @@ public class EditFeature
         swModelDocExt.SelectByRay(-1, 3, 1, 0, -1, 0, 0.001, (int)swSelectType_e.swSelEDGES, true, 2, 0);
 
         //Create linear pattern
-        var swLinearPatternData = (LinearPatternFeatureData
+        var swLinearPatternFeatureData = (LinearPatternFeatureData
             )swFeatureMgr.CreateDefinition((int)swFeatureNameID_e.swFmLPattern);
 
-        swLinearPatternData.D1EndCondition = 0;//阵列的方式，有间距与实例数和到参考
-        swLinearPatternData.D1ReverseDirection = true;//反向
-        swLinearPatternData.D1Spacing = 1d;//间距，
-        swLinearPatternData.D1TotalInstances = 2;//实例数
+        swLinearPatternFeatureData.D1EndCondition = 0;//阵列的方式，有间距与实例数和到参考
+        swLinearPatternFeatureData.D1ReverseDirection = true;//反向
+        swLinearPatternFeatureData.D1Spacing = 1d;//间距，
+        swLinearPatternFeatureData.D1TotalInstances = 2;//实例数
 
-        swLinearPatternData.D2EndCondition = 0;
-        swLinearPatternData.D2PatternSeedOnly = false;//方向2，只阵列源
-        swLinearPatternData.D2ReverseDirection = false;
-        swLinearPatternData.D2Spacing = 1d;
-        swLinearPatternData.D2TotalInstances = 2;
+        swLinearPatternFeatureData.D2EndCondition = 0;
+        swLinearPatternFeatureData.D2PatternSeedOnly = false;//方向2，只阵列源
+        swLinearPatternFeatureData.D2ReverseDirection = false;
+        swLinearPatternFeatureData.D2Spacing = 1d;
+        swLinearPatternFeatureData.D2TotalInstances = 2;
 
-        swLinearPatternData.GeometryPattern = false;//集合体阵列
-        swLinearPatternData.VarySketch = false;
-        var swFeat = swFeatureMgr.CreateFeature(swLinearPatternData);
+        swLinearPatternFeatureData.GeometryPattern = false;//几何体阵列
+        swLinearPatternFeatureData.VarySketch = false;
+        var swFeat = swFeatureMgr.CreateFeature(swLinearPatternFeatureData);
 
 
         if (swFeat != null)
@@ -817,7 +817,7 @@ public class EditFeature
         swModel.ViewZoomtofit2();
     }
 
-    public void SketchPattern()
+    public void SketchDrivenPattern()
     {
         FeatureExtrusion();
         var swModel = (ModelDoc2)_swApp.ActiveDoc;
