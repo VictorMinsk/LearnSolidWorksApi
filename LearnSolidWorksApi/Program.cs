@@ -70,7 +70,7 @@ EditFeature editFeature = new EditFeature(swApp!);
 //editFeature.ConstFillet();
 //editFeature.FullRoundFillet();
 //倒角
-editFeature.Chamfer();
+//editFeature.Chamfer();
 //镜像
 //editFeature.Mirror();
 //线性阵列
@@ -78,4 +78,4 @@ editFeature.Chamfer();
 //圆周阵列
 //editFeature.CircularPattern();
 //草图驱动阵列
-//editFeature.SketchPattern();
+editFeature.SketchDrivenPattern();

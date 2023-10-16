@@ -797,11 +797,11 @@ public class EditFeature
 
         var swCircularPatternData = (CircularPatternFeatureData)swFeatureMgr.CreateDefinition((int)swFeatureNameID_e.swFmCirPattern);
         swCircularPatternData.EqualSpacing = true;//等间距
+        swCircularPatternData.ReverseDirection = false;//反向
         swCircularPatternData.Spacing = Math.PI*2;//角度
         swCircularPatternData.TotalInstances = 3;//实例数
         swCircularPatternData.Direction2 = false;//方向2
-        swCircularPatternData.GeometryPattern = false;//几何体阵列
-        swCircularPatternData.ReverseDirection = false;//反向
+        swCircularPatternData.GeometryPattern = false;//几何体阵列        
         swCircularPatternData.VarySketch = false;
 
         var swFeat = swFeatureMgr.CreateFeature(swCircularPatternData);
@@ -819,40 +819,55 @@ public class EditFeature
 
     public void SketchDrivenPattern()
     {
-        FeatureExtrusion();
-        var swModel = (ModelDoc2)_swApp.ActiveDoc;
+        var swModel = NewDocument();
         var swModelDocExt = swModel.Extension;
         var swSketchMgr = swModel.SketchManager;
         var swFeatureMgr = swModel.FeatureManager;
-        var swSelMgr = (SelectionMgr)swModel.SelectionManager;
-        swModel.ClearSelection2(true);
-        //选择顶面，绘制一个包含多个点的草图
-        swModelDocExt.SelectByRay(0, 3, 0, 0, -1, 0, 0.001, (int)swSelectType_e.swSelFACES, true, 0, 0);
-        swSketchMgr.InsertSketch(true);
-        swSketchMgr.CreatePoint(-0.5, -0.5, 0);
-        swSketchMgr.CreatePoint(0, -0.7, 0);
-        swSketchMgr.CreatePoint(0.7, -1.2, 0);
+
+        swModelDocExt.SelectByID2("Top Plane", "PLANE", 0, 0, 0, false, 0, null, (int)swSelectOption_e.swSelectOptionDefault);
         swSketchMgr.InsertSketch(true);
 
+        swSketchMgr.CreateCircleByRadius(0, 0, 0, 1);
+        var baseFeat = swFeatureMgr.FeatureExtrusion3(
+            true, false, false,//与拉伸方向有关
+            (int)swEndConditions_e.swEndCondBlind, (int)swEndConditions_e.swEndCondBlind, //结束条件相关
+            100d/1000d, 0, //拉伸深度
+            false, false, false, true, 0, 0, //拔模相关
+            false, false, false, false, //结束条件为到离指定面指定的距离，反向等距和转化曲面
+            true, false, true, //多实体合并结果
+            (int)swStartConditions_e.swStartSketchPlane, 0, false); //拉伸起始条件，等距
+        
         swModel.ClearSelection2(true);
         //选择顶面，再做一个拉伸特征
-        swModelDocExt.SelectByRay(0, 3, 0, 0, -1, 0, 0.001, (int)swSelectType_e.swSelFACES, true, 0, 0);
+        swModelDocExt.SelectByRay(0, 1, 0, 0, -1, 0, 0.001, (int)swSelectType_e.swSelFACES, true, 0, 0);
         swSketchMgr.InsertSketch(true);
-        swSketchMgr.CreateCircleByRadius(-0.8d, -1.8d, 0, 0.1d);
+        swSketchMgr.CreateCircleByRadius(-0.7d, 0, 0, 0.2d);
         var extrudeFeat = swFeatureMgr.FeatureExtrusion3(
             true, false, false,//与拉伸方向有关
             (int)swEndConditions_e.swEndCondBlind, (int)swEndConditions_e.swEndCondBlind, //结束条件相关
-            0.1, 0, //拉伸深度
+            100d/1000d, 0, //拉伸深度
             false, false, false, true, 0, 0, //拔模相关
             false, false, false, false, //结束条件为到离指定面指定的距离，反向等距和转化曲面
             true, false, true, //多实体合并结果
             (int)swStartConditions_e.swStartSketchPlane, 0, false); //拉伸起始条件，等距
 
         swModel.ClearSelection2(true);
+        //选择顶面，绘制一个包含多个点的草图（随意创建，只要在面内上即可），驱动草图
+        swModelDocExt.SelectByRay(0, 3, 0, 0, -1, 0, 0.001, (int)swSelectType_e.swSelFACES, true, 0, 0);
+        swSketchMgr.InsertSketch(true);
+        swSketchMgr.CreatePoint(0, 0, 0);
+        swSketchMgr.CreatePoint(-0.2, -0.5, 0);
+        swSketchMgr.CreatePoint(0.3, 0.7, 0);
+        swSketchMgr.CreatePoint(0.7, -0.2, 0);
+        swSketchMgr.InsertSketch(true);
+
+
+        swModel.ClearSelection2(true);
         //Select feature to pattern，选择特征标记为4
         extrudeFeat.Select2(false, 4);
         //选择草图标记为64
-        swModelDocExt.SelectByID2("", "SKETCH", 0.7, 1, 1.2, true, 64, null, 0);
+        swModelDocExt.SelectByID2("", "SKETCH", 0, 100d/1000d, 0, true, 64, null, 0);
+
         var swSketchPatternData = (SketchPatternFeatureData)swFeatureMgr.CreateDefinition((int)swFeatureNameID_e.swFmSketchPattern);
         swSketchPatternData.GeometryPattern = false;//几何体阵列
         swSketchPatternData.UseCentroid = true;//参考点，重心
